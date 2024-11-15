@@ -215,3 +215,25 @@ int main(int argc, char* argv[]) {
     // Configurar color de fondo
     SDL_SetRenderDrawColor(renderizador, 173, 255, 47, 255); // Verde claro
 
+// Cargar fuente para el título 
+    TTF_Font* fuente = TTF_OpenFont("Crang.ttf", 48);  // Título más grande
+    if (fuente == NULL) {
+        printf("Error al cargar la fuente: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderizador);
+        SDL_DestroyWindow(ventana);
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+    }
+        // Crear fuente más pequeña para el botón
+        TTF_Font* fuenteBoton = TTF_OpenFont("Crang.ttf", 30);  // Fuente más p>
+    // Cargar fuente más pequeña para el highscore
+    TTF_Font* fuentePequena = TTF_OpenFont("Crang.ttf", 18);  // Fuente más peq>
+    if (fuentePequena == NULL) {
+        printf("Error al cargar la fuente para highscore: %s\n", TTF_GetError()>
+        SDL_DestroyRenderer(renderizador);
+        SDL_DestroyWindow(ventana);
+        TTF_Quit();
+ SDL_Quit();
+        return 1;
+    }
