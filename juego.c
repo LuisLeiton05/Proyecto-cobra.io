@@ -31,8 +31,17 @@ bool inicializar_SDL () {
 
 int main () {
     // Inicializamos.
-     if ( inicializar_SDL != 0 ) {
+    if ( inicializar_SDL != 0 ) {
         printf ("Error al inicializar SDL: %s \n ", SDL_GetError()) ;
+        return 0 ; // Sale si lo cumple.
+    } 
+
+    // Crear una ventana donde irá todo.
+    SDL_Window * ventana = SDL_CreateWindow("cobra.io", ancho_ventana, altura_ventana, SDL_WINDOW_MINIMIZED) ;
+    if (ventana == NULL ) {
+        printf ("Error al crear la ventana: %s \n ", SDL_GetError()) ;
+        SDL_DestroyWindow (ventana);
+        SDL_Quit () ;
         return 0 ; // Sale si lo cumple.
     } 
     
@@ -40,11 +49,11 @@ int main () {
 
 
 
-// Finalizar el programa.
+    // Finalizar el programa.
+    SDL_DestroyWindow (ventana);
+    SDL_Quit() ;
 
-SDL_Quit() ;
-
-
+    return 0;
 }
 
 
