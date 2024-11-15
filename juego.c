@@ -55,8 +55,17 @@ bool crear_renderizador ( SDL_Renderer ** renderizador,SDL_Window ** ventana ) {
 }
 
 // Función para dibujar las celdas.
+void dibujar_tablero (SDL_Renderer ** renderizador){
+    for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                SDL_Rect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+                SDL_SetRenderDrawColor(renderizador, 0, 0, 200, 180); // Color azul, medio transparente.
+                SDL_RenderFillRect(renderizador, &celda);
+            }
+        }
 
 
+}
 
 // Dibujar la serpiente y localización.
 
@@ -86,15 +95,10 @@ int main () {
     } 
 
         // Dibujamos las celdas/tablero.
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                SDL_Rect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
-                SDL_SetRenderDrawColor(renderizador2, 0, 0, 200, 180); // Color azul, medio transparente.
-                SDL_RenderFillRect(renderizador2, &celda);
-            }
-        }
-
+        dibujar_tablero(&renderizador2) ;
         // Dibujamos la serpiente y su localización.
+
+        //Dibujamos la comida y su localización.
 
 
     // 
