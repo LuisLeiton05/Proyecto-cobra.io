@@ -15,15 +15,15 @@
 #include <stdbool.h>
 
 //Definimos los parámetros a usar en las funciones:
-const int ancho_ventana =  640 ;
-const int altura_ventana = 480 ;
-const int tamaño_celdas = 20 ;
+const int ancho_ventana =  750 ;
+const int altura_ventana = 375 ;
+const int tamaño_celdas = 19;
 const int filas = altura_ventana / tamaño_celdas ;
 const int columnas = ancho_ventana / tamaño_celdas ;
 
 // Función para inicializar.
 bool inicializar_SDL () {
-    if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
+    if ( SDL_Init(SDL_INIT_VIDEO) != true ) {
         printf ("Error al inicializar SDL: %s \n ", SDL_GetError()) ;
         return false ; 
     }
@@ -33,7 +33,7 @@ bool inicializar_SDL () {
 
 // Función para crear una ventana.
 bool crear_ventana (SDL_Window ** ventana) {
-    * ventana = SDL_CreateWindow("cobra.io", ancho_ventana, altura_ventana, SDL_WINDOW_MINIMIZED) ;
+    * ventana = SDL_CreateWindow("cobra.io", ancho_ventana, altura_ventana, 0) ;
     if ( * ventana == NULL ) {
         printf ("Error al crear la ventana: %s \n ", SDL_GetError()) ;
         SDL_Quit () ;
@@ -58,17 +58,29 @@ bool crear_renderizador ( SDL_Renderer ** renderizador,SDL_Window * ventana ) {
 void dibujar_tablero (SDL_Renderer * renderizador){
     for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                SDL_Rect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
-                SDL_SetRenderDrawColor(renderizador, 0, 0, 200, 180); // Color azul, medio transparente.
+                SDL_FRect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+
+                // Alternar colores. 
+                if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
+                    SDL_SetRenderDrawColor(renderizador, 0, 0, 110, 100); // azul oscuro.
+                } else {
+                    SDL_SetRenderDrawColor(renderizador, 0, 0, 150, 100); // azul claro.
+                }
+            
                 SDL_RenderFillRect(renderizador, &celda);
+
+            // Dibuja el borde de la celda para un estilo retro.
+            SDL_SetRenderDrawColor(renderizador, 0, 0, 90,255); // Bordes de las celdas, negros.
+            SDL_RenderRect(renderizador, &celda);  // Dibuja solo el borde de la celda.
             }
-        }
+
+    }
 }
 
 // Función para dibujar la serpiente y localización.
 void dibujar_serpiente (int size, SDL_Point *tamano_serpiente, SDL_Renderer * renderizador ) {
     for (int i = 0; i < size; i++) {
-        SDL_Rect rect = { tamano_serpiente[i].x * tamaño_celdas, tamano_serpiente[i].y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+        SDL_FRect rect = { tamano_serpiente[i].x * tamaño_celdas, tamano_serpiente[i].y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
         SDL_SetRenderDrawColor(renderizador, 0, 255, 0, 255); // Color verde para la serpiente
         SDL_RenderFillRect(renderizador, &rect);
     }
@@ -82,7 +94,7 @@ void dibujar_comida (SDL_Renderer * renderizador) {
     comida.x = rand() % columnas;
     comida.y = rand() % filas;
 
-    SDL_Rect rect = { comida.x * tamaño_celdas, comida.y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+    SDL_FRect rect = { comida.x * tamaño_celdas, comida.y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
     SDL_SetRenderDrawColor(renderizador, 255, 0, 0, 255); // Color rojo para la comida
     SDL_RenderFillRect(renderizador, &rect);
 
@@ -111,7 +123,7 @@ int main () {
     } 
 
         // Dibujamos las celdas/tablero.
-        dibujar_tablero(&renderizador2) ;
+        dibujar_tablero(renderizador2) ;
 
         // Dibujamos la serpiente y su localización.
         int size = 1;
@@ -128,7 +140,8 @@ int main () {
 
 
     // Bucle del juego.
-
+        // Por el momento que se duerma para poder ver la ventana.
+        SDL_Delay(10000) ;
 
     // Finalizar el programa y liberar recursos.
     free (tamano_serpiente) ;
