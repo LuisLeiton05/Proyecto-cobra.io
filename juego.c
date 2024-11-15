@@ -157,3 +157,39 @@ int main () {
 /*
     Menu del juego: apariencia, colores, boton de jugar, mejor tiempo, etc.
 */ 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// Tamaño de la ventana
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
+// Estructura para el puntaje más alto
+int highscore = 0;
+
+// Función para cargar el highscore desde un archivo
+void loadHighscore() {
+    FILE *file = fopen("highscore.txt", "r");
+    if (file != NULL) {
+        fscanf(file, "%d", &highscore);
+        fclose(file);
+    }
+}
+// Función para guardar el highscore en un archivo
+void saveHighscore() {
+    FILE *file = fopen("highscore.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "%d", highscore);
+        fclose(file);
+    }
+}
+
+int main(int argc, char* argv[]) {
+    // Inicializar SDL y SDL_ttf
+    if (SDL_Init(SDL_INIT_VIDEO) < 0 || TTF_Init() == -1) {
+        printf("Error al inicializar SDL o SDL_ttf: %s\n", SDL_GetError());
+        return 1;
+    }
+
