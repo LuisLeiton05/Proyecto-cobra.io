@@ -45,11 +45,19 @@ int main () {
         return 0 ; // Sale si lo cumple.
     } 
     
-
-
+    // Creamos el renderizador (los dibujos)
+    SDL_Renderer *renderizador = SDL_CreateRenderer(ventana, NULL) ;
+    if (renderizador == NULL ) {
+        printf ("Error al crear el renderizador: %s \n ", SDL_GetError()) ;
+        SDL_DestroyRenderer (renderizador) ;
+        SDL_DestroyWindow (ventana) ;
+        SDL_Quit () ;
+        return 0 ; // Sale si lo cumple.
+    } 
 
 
     // Finalizar el programa.
+    SDL_DestroyRenderer (renderizador) ;
     SDL_DestroyWindow (ventana);
     SDL_Quit() ;
 
