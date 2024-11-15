@@ -193,3 +193,25 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+ // Crear la ventana
+    SDL_Window* ventana = SDL_CreateWindow("Cobra.io", SDL_WINDOWPOS_CENTERED, >
+    if (ventana == NULL) {
+        printf("Error al crear la ventana: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
+    // Crear el renderizador
+    SDL_Renderer* renderizador = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_A>
+    if (renderizador == NULL) {
+        printf("Error al crear el renderizador: %s\n", SDL_GetError());
+        SDL_DestroyWindow(ventana);
+        SDL_Quit();
+        return 1;
+    }
+  // Cargar el highscore desde el archivo
+    loadHighscore();
+
+    // Configurar color de fondo
+    SDL_SetRenderDrawColor(renderizador, 173, 255, 47, 255); // Verde claro
+
