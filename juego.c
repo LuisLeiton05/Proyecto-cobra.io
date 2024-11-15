@@ -1,8 +1,3 @@
-#include <SDL3/SDL.h>
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <stdbool.h>
-
 
 /*
     Logica del juego: movimiento de la serpiente , choques, crecimiento, comida, etc.
@@ -13,6 +8,10 @@
 /*
     Interfaz del juego: visualizacion de la serpiente (forma), comida, tablero, etc.
 */ 
+#include <SDL3/SDL.h>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <stdbool.h>
 
 //Definimos los parámetros a usar en las funciones:
 const int ancho_ventana =  640 ;
@@ -68,8 +67,10 @@ void dibujar_tablero (SDL_Renderer ** renderizador){
 }
 
 // Dibujar la serpiente y localización.
+void dibujar_serpiente (int size) {
 
 
+}
 
 // Dibujar la comida y localización.
 
@@ -97,6 +98,8 @@ int main () {
         // Dibujamos las celdas/tablero.
         dibujar_tablero(&renderizador2) ;
         // Dibujamos la serpiente y su localización.
+        int size = 1;
+        int *tamano_serpiente = (int *)malloc(size * sizeof(int *)) ;
 
         //Dibujamos la comida y su localización.
 
