@@ -237,3 +237,19 @@ int main(int argc, char* argv[]) {
  SDL_Quit();
         return 1;
     }
+ // Crear texto "cobra.io" (Título)
+    SDL_Color colorNegro = {0, 0, 0, 255};
+    SDL_Surface* superficieTitulo = TTF_RenderText_Solid(fuente, "cobra.io", co>
+    SDL_Texture* texturaTitulo = SDL_CreateTextureFromSurface(renderizador, sup>
+    SDL_Rect rectTitulo = {SCREEN_WIDTH / 2 - superficieTitulo->w / 2, 100, sup>
+        // Crear texto "PRESS TO START" para el botón
+        SDL_Surface* superficieBoton = TTF_RenderText_Solid(fuenteBoton, "JUGAR>
+        SDL_Texture* texturaBoton = SDL_CreateTextureFromSurface(renderizador, >
+        SDL_Rect rectBoton = {SCREEN_WIDTH / 2 - superficieBoton->w / 2, 350, s>
+    // Crear texto para mostrar el highscore (en la esquina)
+    char highscoreText[20];
+    snprintf(highscoreText, sizeof(highscoreText), "RECORD: %d", highscore);
+    SDL_Surface* superficieHighscore = TTF_RenderText_Solid(fuentePequena, high>
+    SDL_Texture* texturaHighscore = SDL_CreateTextureFromSurface(renderizador, >
+    SDL_Rect rectHighscore = {SCREEN_WIDTH - superficieHighscore->w - 20, 20, s>
+
