@@ -253,3 +253,48 @@ int main(int argc, char* argv[]) {
     SDL_Texture* texturaHighscore = SDL_CreateTextureFromSurface(renderizador, >
     SDL_Rect rectHighscore = {SCREEN_WIDTH - superficieHighscore->w - 20, 20, s>
 
+// Bucle principal
+    int enEjecucion = 1;
+    SDL_Event evento;
+    while (enEjecucion) {
+        // Manejar eventos
+        while (SDL_PollEvent(&evento)) {
+            if (evento.type == SDL_QUIT) {
+                enEjecucion = 0;
+            }
+        }
+
+        // Dibujar fondo
+        SDL_SetRenderDrawColor(renderizador, 173, 255, 47, 255);
+        SDL_RenderClear(renderizador);
+
+        // Dibujar título "cobra.io"
+        SDL_RenderCopy(renderizador, texturaTitulo, NULL, &rectTitulo);
+// Dibujar highscore en la esquina
+        SDL_RenderCopy(renderizador, texturaHighscore, NULL, &rectHighscore);
+
+        // Dibujar botón "PRESS TO START"
+        SDL_RenderCopy(renderizador, texturaBoton, NULL, &rectBoton);
+
+        // Actualizar pantalla
+        SDL_RenderPresent(renderizador);
+    }
+ // Limpiar recursos
+    SDL_DestroyTexture(texturaTitulo);
+    SDL_FreeSurface(superficieTitulo);
+    SDL_DestroyTexture(texturaBoton);
+    SDL_FreeSurface(superficieBoton);
+    SDL_DestroyTexture(texturaHighscore);
+    SDL_FreeSurface(superficieHighscore);
+    TTF_CloseFont(fuente);
+    TTF_CloseFont(fuentePequena);
+    SDL_DestroyRenderer(renderizador);
+    SDL_DestroyWindow(ventana);
+    TTF_Quit();
+    SDL_Quit();
+
+    // Guardar el highscore al salir
+    saveHighscore();
+
+    return 0;
+}
