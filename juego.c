@@ -157,3 +157,144 @@ int main () {
 /*
     Menu del juego: apariencia, colores, boton de jugar, mejor tiempo, etc.
 */ 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// Tamaño de la ventana
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
+// Estructura para el puntaje más alto
+int highscore = 0;
+
+// Función para cargar el highscore desde un archivo
+void loadHighscore() {
+    FILE *file = fopen("highscore.txt", "r");
+    if (file != NULL) {
+        fscanf(file, "%d", &highscore);
+        fclose(file);
+    }
+}
+// Función para guardar el highscore en un archivo
+void saveHighscore() {
+    FILE *file = fopen("highscore.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "%d", highscore);
+        fclose(file);
+    }
+}
+
+int main(int argc, char* argv[]) {
+    // Inicializar SDL y SDL_ttf
+    if (SDL_Init(SDL_INIT_VIDEO) < 0 || TTF_Init() == -1) {
+        printf("Error al inicializar SDL o SDL_ttf: %s\n", SDL_GetError());
+        return 1;
+    }
+
+ // Crear la ventana
+    SDL_Window* ventana = SDL_CreateWindow("Cobra.io", SDL_WINDOWPOS_CENTERED, >
+    if (ventana == NULL) {
+        printf("Error al crear la ventana: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
+    // Crear el renderizador
+    SDL_Renderer* renderizador = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_A>
+    if (renderizador == NULL) {
+        printf("Error al crear el renderizador: %s\n", SDL_GetError());
+        SDL_DestroyWindow(ventana);
+        SDL_Quit();
+        return 1;
+    }
+  // Cargar el highscore desde el archivo
+    loadHighscore();
+
+    // Configurar color de fondo
+    SDL_SetRenderDrawColor(renderizador, 173, 255, 47, 255); // Verde claro
+
+// Cargar fuente para el título 
+    TTF_Font* fuente = TTF_OpenFont("Crang.ttf", 48);  // Título más grande
+    if (fuente == NULL) {
+        printf("Error al cargar la fuente: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderizador);
+        SDL_DestroyWindow(ventana);
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+    }
+        // Crear fuente más pequeña para el botón
+        TTF_Font* fuenteBoton = TTF_OpenFont("Crang.ttf", 30);  // Fuente más p>
+    // Cargar fuente más pequeña para el highscore
+    TTF_Font* fuentePequena = TTF_OpenFont("Crang.ttf", 18);  // Fuente más peq>
+    if (fuentePequena == NULL) {
+        printf("Error al cargar la fuente para highscore: %s\n", TTF_GetError()>
+        SDL_DestroyRenderer(renderizador);
+        SDL_DestroyWindow(ventana);
+        TTF_Quit();
+ SDL_Quit();
+        return 1;
+    }
+ // Crear texto "cobra.io" (Título)
+    SDL_Color colorNegro = {0, 0, 0, 255};
+    SDL_Surface* superficieTitulo = TTF_RenderText_Solid(fuente, "cobra.io", co>
+    SDL_Texture* texturaTitulo = SDL_CreateTextureFromSurface(renderizador, sup>
+    SDL_Rect rectTitulo = {SCREEN_WIDTH / 2 - superficieTitulo->w / 2, 100, sup>
+        // Crear texto "PRESS TO START" para el botón
+        SDL_Surface* superficieBoton = TTF_RenderText_Solid(fuenteBoton, "JUGAR>
+        SDL_Texture* texturaBoton = SDL_CreateTextureFromSurface(renderizador, >
+        SDL_Rect rectBoton = {SCREEN_WIDTH / 2 - superficieBoton->w / 2, 350, s>
+    // Crear texto para mostrar el highscore (en la esquina)
+    char highscoreText[20];
+    snprintf(highscoreText, sizeof(highscoreText), "RECORD: %d", highscore);
+    SDL_Surface* superficieHighscore = TTF_RenderText_Solid(fuentePequena, high>
+    SDL_Texture* texturaHighscore = SDL_CreateTextureFromSurface(renderizador, >
+    SDL_Rect rectHighscore = {SCREEN_WIDTH - superficieHighscore->w - 20, 20, s>
+
+// Bucle principal
+    int enEjecucion = 1;
+    SDL_Event evento;
+    while (enEjecucion) {
+        // Manejar eventos
+        while (SDL_PollEvent(&evento)) {
+            if (evento.type == SDL_QUIT) {
+                enEjecucion = 0;
+            }
+        }
+
+        // Dibujar fondo
+        SDL_SetRenderDrawColor(renderizador, 173, 255, 47, 255);
+        SDL_RenderClear(renderizador);
+
+        // Dibujar título "cobra.io"
+        SDL_RenderCopy(renderizador, texturaTitulo, NULL, &rectTitulo);
+// Dibujar highscore en la esquina
+        SDL_RenderCopy(renderizador, texturaHighscore, NULL, &rectHighscore);
+
+        // Dibujar botón "PRESS TO START"
+        SDL_RenderCopy(renderizador, texturaBoton, NULL, &rectBoton);
+
+        // Actualizar pantalla
+        SDL_RenderPresent(renderizador);
+    }
+ // Limpiar recursos
+    SDL_DestroyTexture(texturaTitulo);
+    SDL_FreeSurface(superficieTitulo);
+    SDL_DestroyTexture(texturaBoton);
+    SDL_FreeSurface(superficieBoton);
+    SDL_DestroyTexture(texturaHighscore);
+    SDL_FreeSurface(superficieHighscore);
+    TTF_CloseFont(fuente);
+    TTF_CloseFont(fuentePequena);
+    SDL_DestroyRenderer(renderizador);
+    SDL_DestroyWindow(ventana);
+    TTF_Quit();
+    SDL_Quit();
+
+    // Guardar el highscore al salir
+    saveHighscore();
+
+    return 0;
+}
