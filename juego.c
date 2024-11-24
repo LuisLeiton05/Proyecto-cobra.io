@@ -9,7 +9,7 @@
 /*
     Interfaz del juego: visualizacion de la serpiente (forma), comida, tablero, etc.
 */ 
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <stdbool.h>
@@ -23,7 +23,7 @@ const int columnas = ancho_ventana / tamaño_celdas ;
 
 // Función para inicializar.
 bool inicializar_SDL () {
-    if ( SDL_Init(SDL_INIT_VIDEO) != true ) {
+    if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
         printf ("Error al inicializar SDL: %s \n ", SDL_GetError()) ;
         return false ; 
     }
@@ -33,7 +33,7 @@ bool inicializar_SDL () {
 
 // Función para crear una ventana.
 bool crear_ventana (SDL_Window ** ventana) {
-    * ventana = SDL_CreateWindow("cobra.io", ancho_ventana, altura_ventana, 0) ;
+    * ventana = SDL_CreateWindow("cobra.io", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ancho_ventana, altura_ventana, SDL_WINDOW_SHOWN) ;
     if ( * ventana == NULL ) {
         printf ("Error al crear la ventana: %s \n ", SDL_GetError()) ;
         SDL_Quit () ;
@@ -44,7 +44,7 @@ bool crear_ventana (SDL_Window ** ventana) {
 
 // Función para crear el renderizador.
 bool crear_renderizador ( SDL_Renderer ** renderizador,SDL_Window * ventana ) {
-    * renderizador = SDL_CreateRenderer(ventana, NULL) ;
+    * renderizador = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_ACCELERATED) ;
     if (renderizador == NULL ) {
         printf ("Error al crear el renderizador: %s \n ", SDL_GetError()) ;
         SDL_DestroyWindow (ventana) ;
@@ -57,30 +57,29 @@ bool crear_renderizador ( SDL_Renderer ** renderizador,SDL_Window * ventana ) {
 // Función para dibujar las celdas.
 void dibujar_tablero (SDL_Renderer * renderizador){
     for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                SDL_FRect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+        for (int j = 0; j < columnas; j++) {
+            SDL_Rect celda = { j * tamaño_celdas, i * tamaño_celdas, tamaño_celdas, tamaño_celdas };
 
-                // Alternar colores. 
-                if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
-                    SDL_SetRenderDrawColor(renderizador, 80, 80, 80, 255); // Gris oscuro.
-                } else {
-                    SDL_SetRenderDrawColor(renderizador, 128, 128, 128, 255); // Gris claro.
-                }
-            
-                SDL_RenderFillRect(renderizador, &celda);
-
-            // Dibuja el borde de la celda para un estilo retro.
-            SDL_SetRenderDrawColor(renderizador, 0, 0, 50, 255); // Bordes de las celdas.
-            SDL_RenderRect(renderizador, &celda);  // Dibuja solo el borde de la celda.
+            // Alternar colores. 
+            if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
+                SDL_SetRenderDrawColor(renderizador, 80, 80, 80, 255); // Gris oscuro.
+            } else {
+                SDL_SetRenderDrawColor(renderizador, 128, 128, 128, 255); // Gris claro.
             }
+        
+            SDL_RenderFillRect(renderizador, &celda);
 
+        // Dibuja el borde de la celda para un estilo retro.
+        SDL_SetRenderDrawColor(renderizador, 80, 80, 80,255); // Bordes de las celdas.
+        SDL_RenderDrawRect(renderizador, &celda);  // Dibuja solo el borde de la celda.
+        }
     }
 }
 
 // Función para dibujar la serpiente y localización.
 void dibujar_serpiente (int size, SDL_Point *tamano_serpiente, SDL_Renderer * renderizador ) {
     for (int i = 0; i < size; i++) {
-        SDL_FRect rect = { tamano_serpiente[i].x * tamaño_celdas, tamano_serpiente[i].y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+        SDL_Rect rect = { tamano_serpiente[i].x * tamaño_celdas, tamano_serpiente[i].y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
         SDL_SetRenderDrawColor(renderizador, 0, 255, 0, 255); // Color verde para la serpiente
         SDL_RenderFillRect(renderizador, &rect);
     }
@@ -94,7 +93,7 @@ void dibujar_comida (SDL_Renderer * renderizador) {
     comida.x = rand() % columnas;
     comida.y = rand() % filas;
 
-    SDL_FRect rect = { comida.x * tamaño_celdas, comida.y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
+    SDL_Rect rect = { comida.x * tamaño_celdas, comida.y * tamaño_celdas, tamaño_celdas, tamaño_celdas };
     SDL_SetRenderDrawColor(renderizador, 255, 0, 0, 255); // Color rojo para la comida
     SDL_RenderFillRect(renderizador, &rect);
 
@@ -103,21 +102,21 @@ void dibujar_comida (SDL_Renderer * renderizador) {
 
 int main () {
     // Inicializamos.
-    if ( inicializar_SDL () != true ) {
+    if ( !inicializar_SDL () ) {
         printf ("Error al inicializar SDL: %s \n ", SDL_GetError()) ;
         return 0 ; // Sale si lo cumple.
     } 
 
     // LLamamos la función de la ventana.
     SDL_Window *ventana2 ;
-    if ( crear_ventana(&ventana2) != true) {
+    if ( !crear_ventana(&ventana2) ) {
         printf ("Error al crear la ventana: %s \n ", SDL_GetError()) ;
         return 0 ; // Sale si lo cumple.
     } 
     
     // LLamamos la función del renderizador.
     SDL_Renderer * renderizador2 ;
-    if ( crear_renderizador(&renderizador2, ventana2) != true) {
+    if ( !crear_renderizador(&renderizador2, ventana2) ) {
         printf ("Error al crear la ventana: %s \n ", SDL_GetError()) ;
         return 0 ; // Sale si lo cumple.
     } 
@@ -151,7 +150,6 @@ int main () {
 
     return 0;
 }
-
 
 
 /*
