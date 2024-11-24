@@ -70,7 +70,7 @@ void dibujar_tablero (SDL_Renderer * renderizador){
                 SDL_RenderFillRect(renderizador, &celda);
 
             // Dibuja el borde de la celda para un estilo retro.
-            SDL_SetRenderDrawColor(renderizador, 0, 0, 90,255); // Bordes de las celdas, negros.
+            SDL_SetRenderDrawColor(renderizador, 0, 0, 50, 255); // Bordes de las celdas.
             SDL_RenderRect(renderizador, &celda);  // Dibuja solo el borde de la celda.
             }
 
