@@ -4,6 +4,23 @@
 #include <stdlib.h>
 #include <SDL3/SDL.h>
 #include <stdbool.h>
+#include <conio.h> (para guardar las teclas presionadas que mantienen el curso de la serpiente)
+struct snake *Snake; // para asignar el comportamiento de la serpiente
+// struct apple *Apple;
+int dir[2] = {0, -1}; (posición inicial de la serpiente)
+
+//ESTRUCTURAS
+struct snake{
+	int X, Y, AP, COLOR;
+	struct snake *next;
+};
+
+//FUNCIONES SERPIENTE
+void crecer_Serpiente(int x, int y, struct snake *body);
+void crear_Serpiente();
+void mover_Serpiente(int x, int y, struct snake *body);
+int collision_Tablero();
+int collision_Self();
 
 // Tamaño de la ventana (menu).
 #define SCREEN_WIDTH 640
@@ -259,17 +276,69 @@ int main() {
                     SDL_RenderPresent(renderizador2) ;
 
 
-                // Funcionalidad del juego.
+                // Funcionalidad del juego. (antes de correrlo, favor verificar la correspondencia con las variables)
+                
+                        
                     // Por el momento que se duerma para poder ver la ventana.
                     SDL_Delay(10000) ; // Quitarlo.
                     // Movimiento continuo de la serpiente.
-
+                    void mover_Serpiente(int x, int y, struct snake *body){
+	                    if(body->next != NULL){
+		                mover_Serpiente(body->X, body->Y, body->next);
+	                    }
+	                    else{
+		                cola_Anterior[0] = body->X;
+		                cola_Anterior[1] = body->Y;
+	                    }
+	                    body->X = x;
+	                    body->Y = y;
+                        }
                     // Movimiento con las teclas.
-
+                    //Esto daría control a la serpiente de los movimientos, pero no sé si se deja acá o se monta en el bucle
+                    while(!game_over){;
+		                if(kbhit()){
+			                tecla = getch();
+			                //dir[0]=(tecla == DERECHA)-(tecla == IZQUIERDA);
+			                //dir[1]=(tecla == ABAJO)-(tecla == ARRIBA);
+                            mover_Serpiente(Snake->X+dir[0],Snake->Y+dir[1], Snake);
                     // Control de choques, cuando se pierde volver al menu.
+                    int collision_Tablero(){
+	                    int B = 0;
+	                    B = (Snake->X <= XBOUND)+(Snake->X > (XBOUND + NX));
+	                    B += (Snake->Y <= YBOUND)+(Snake->Y >(YBOUND + NY));
+	                    return B;
+                        }
+
+                    int collision_Self(struct snake *body){
+	                if((Snake->X == body->X) && (Snake->Y == body->Y)){
+		                return 1;
+	                    }
+	                else{
+	            	    if(body->next != NULL){
+		        	        return collision_Self(body->next);
+		                    }
+	            	    else{
+		            	    return 0; //acá falta retonarlo al menú
+		                    }
+	                    }
+                    }
 
                     // Crecer al comer.
+                    void crecer_Serpiente(int x, int y, struct snake *body){
+	                    if(body->next == NULL){
+		                    body->next = (struct snake*)malloc(sizeof(struct snake));
+		                    body->next->X = x;
+		                    body->next->Y = y;
+		                    body->next->AP = CUERPO;
+		                    body->next->COLOR = 32;
+		                    body->next->next = NULL;
+	                        }
+	                    else{
+		                    crecer_Serpiente(x, y, body->next);
+	                        }
+                        }
 
+                        
                     // Funciones referentes al  tiempo.
 
                     // Aumentar la velocidad al pasar 1 min.
