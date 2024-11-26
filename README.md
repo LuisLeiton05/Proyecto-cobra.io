@@ -15,11 +15,11 @@ Este proyecto combina lógica de programación, el manejo de una interfaz gráfi
 ## Dependencias:
 Lista de herramientas como bibliocas y archivos necesarios para ejecutar el proyecto:
 
-    - __SDL2:__ Biblioteca principal y versión utilizada.
+    - SDL2: Biblioteca principal y versión utilizada.
 
-    - __SDL_ttf:__ Extensión de SLD2, para trabajar con fuentes TrueType(TTF).
+    - SDL_ttf: Extensión de SLD2, para trabajar con fuentes TrueType(TTF).
 
-    - __Crang.ttf:__ Tipo de letra utilizada en el menú.
+    - Crang.ttf: Tipo de letra utilizada en el menú.
 
 ## Instalación de las dependencias:
 
