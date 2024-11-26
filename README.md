@@ -36,5 +36,13 @@ Lista de herramientas como bibliocas y archivos necesarios para ejecutar el proy
 
     - Abrir el siguiente enlace: https://www.dafont.com/crang.font
 
-    Una vez dentro de este, presionar donde dice “Download” para descagar un archivo comprimido. Ir a descargas o donde se haya guardado el archivo, lo extraemos y quedará una carpeta llamada “crang”, dentro de esta el archivo “Crang.ttf”. Asegurarse, que este último esté en la misma carpeta en donde se va a compilar y ejecutar el código del archivo “juego.c” (se puede mover o copiar).
-    
+    Una vez dentro de este, presionar donde dice “Download” para descagar un archivo comprimido. Ir a descargas o donde se haya guardado el archivo, lo extraemos y quedará una carpeta llamada “crang”, dentro está el archivo “Crang.ttf”. Asegurarse que este último esté en la misma carpeta en donde se va a compilar y ejecutar el código del archivo “juego.c” (se puede mover o copiar).
+
+## Pasos para ejecución:
+    - Finalmente se debe compilar con el siguiente comando:
+
+    gcc -Wall juego.c -o ejecutable -lSDL2 -lSDL2_ttf
+
+    - Para ejecutar el archivo generado por el comando anterior:
+
+    ./ejecutable
