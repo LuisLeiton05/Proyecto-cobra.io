@@ -15,25 +15,25 @@ Este proyecto combina lógica de programación, el manejo de una interfaz gráfi
 ## Dependencias:
 Lista de herramientas como bibliocas y archivos necesarios para ejecutar el proyecto:
 
-    - **SDL2**: Biblioteca principal y versión utilizada.
+    - __SDL2:__ Biblioteca principal y versión utilizada.
 
-    - **SDL_ttf**: Extensión de SLD2, para trabajar con fuentes TrueType(TTF).
+    - __SDL_ttf:__ Extensión de SLD2, para trabajar con fuentes TrueType(TTF).
 
-    - **Crang.ttf**: Tipo de letra utilizada en el menú.
+    - __Crang.ttf:__ Tipo de letra utilizada en el menú.
 
 ## Instalación de las dependencias:
 
 1. Primero, utilizar el siguiente comando para actualizar la lista de paquetes disponibles desde los repositorios configurados:
 
-    sudo apt update
+    - sudo apt update
 
 2. Ahora, instalamos SDL, versión SDL2 con el siguiente comando:
 
-    sudo apt-get install libsdl2-dev
+    - sudo apt-get install libsdl2-dev
 
 3. Posteriormente, descargar la siguiente biblioteca que es una extensión de SDL2 y permite trabajar con fuentes TrueType (TTF) para renderizar texto:
     
-    sudo apt install libsdl2-ttf-dev
+    - sudo apt install libsdl2-ttf-dev
 
 4. Abrir el siguiente enlace: [Descargar Crang.ttf](https://www.dafont.com/crang.font)
 
@@ -45,8 +45,8 @@ Lista de herramientas como bibliocas y archivos necesarios para ejecutar el proy
 
 1. Finalmente se debe compilar con el siguiente comando:
 
-    gcc -Wall juego.c -o ejecutable -lSDL2 -lSDL2_ttf
+    - gcc -Wall juego.c -o ejecutable -lSDL2 -lSDL2_ttf
 
 2. Para ejecutar el archivo generado por el comando anterior:
 
-    ./ejecutable
+    - ./ejecutable
