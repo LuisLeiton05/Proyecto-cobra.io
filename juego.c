@@ -2,7 +2,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL3/SDL.h>
 #include <stdbool.h>
 
 // Tamaño de la ventana (menu).
