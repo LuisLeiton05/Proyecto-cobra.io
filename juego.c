@@ -365,9 +365,21 @@ int main() {
             SDL_Delay(150); // Controlar la velocidad del juego
         }
     // Finalizar el juego y liberar recursos.
+    SDL_DestroyTexture(texturaTitulo);
+    SDL_FreeSurface(superficieTitulo);
+    SDL_DestroyTexture(texturaBoton);
+    SDL_FreeSurface(superficieBoton);
+    SDL_DestroyTexture(texturaHighscore);
+    SDL_FreeSurface(superficieHighscore);
+    TTF_CloseFont(fuente);
+    TTF_CloseFont(fuenteBoton);
+    TTF_CloseFont(fuentePequena);
     free(tamano_serpiente);
     SDL_DestroyRenderer(renderizador2);
     SDL_DestroyWindow(ventana2);
+    SDL_DestroyRenderer(renderizador);
+    SDL_DestroyWindow(ventana);
+    TTF_Quit();
     SDL_Quit();
     }
     
